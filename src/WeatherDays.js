@@ -1,7 +1,6 @@
 import React, { Component} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col';
 import moment from 'moment';
@@ -12,37 +11,70 @@ import Button from 'react-bootstrap/Button';
 
 const APIKEY = "b86876c84522fe8bb7cac5aa10314f50"
 //const momentRound = require('moment-round');
-class WeatherDays extends Component{
-  state = {
-  newCity:"Lyon",
-  day1:[],
-  day2:[],
-  day3:[],
-  day4:[],
-  day5:[],
-  weatherDay: [],
-  resApi: false,
-  userInput:""
-  }
 
+class WeatherDays extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+        newCity:"Lyon",
+        day1:[],
+        day2:[],
+        day3:[],
+        day4:[],
+        day5:[],
+        weatherDay: [],
+        resApi: false,
+        userInput:"",
+        latitude: "",
+        longitude: ""
+        }
+        this.geo = this.geo.bind(this);
+
+    }
 
 componentDidMount(){
-    //this.api()
+    this.geo()  
 }
-
+apiGeo =() =>{   
+   
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&units=metric&lang=en&appid=${APIKEY}`)
+      .then((res) => res.json())
+      .then(async(data) => { 
+          console.log(data)
+            await this.parseDate(data)
+            await this.setState({resApi : true, newCity : data.city.name}) 
+        })
+        .catch(error => this.setState({resApi : false}))
+ 
+}
 api =() =>{   
-
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.newCity}&units=metric&lang=es&appid=${APIKEY}`)
+    
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.newCity}&units=metric&lang=en&appid=${APIKEY}`)
           .then((res) => res.json())
           .then(async(data) => { 
-              await this.parseDate(data)
-              await this.setState({resApi : true})
-          });
+            console.log(data)
+                await this.parseDate(data)
+                await this.setState({resApi : true}) 
+            
+          })
+          .catch(error => this.setState({resApi : false, newCity : ""}))
      
 }
 weatherDay = (day) =>{
     this.setState({WeatherDay: day})
 }
+geo_success = (position)=> {
+    this.setState({latitude: position.coords.latitude, longitude: position.coords.longitude })
+    this.apiGeo()
+  }
+  
+geo_error() {
+    alert("Sorry, no position available.");
+  }
+
+geo = ()=>{
+    var wpid = navigator.geolocation.watchPosition(this.geo_success, this.geo_error);
+}  
 
 parseDate = (data) =>{
 this.setState({day1: [],day2: [],day3: [],day4: [],day5: [] })    
@@ -91,29 +123,36 @@ onChange = (event) => {
     this.setState({userInput: event.target.value})
   };
 
-handleSubmit = (event) =>{
+handleSubmit = async(event) =>{
     event.preventDefault();
-    this.setState({newCity: this.state.userInput})
-    this.setState({userInput: ""})
-    this.api()
+    await this.setState({latitude : '', longitude : ''}) 
+    await this.setState({newCity: this.state.userInput})
+    await this.setState({userInput: ""})
+    await this.api()
   }
 
 render(){
    
     return ( 
     <div> 
-        <Row  className="justify-content-center text-center text-white" >
-            <Form>
-                <Row>
-                    <Col>
-                    <Form.Control placeholder="Ville" onChange={this.onChange} />
+            <Form className="form">
+                <Row className="justify-content-center">
+                    <Col xs={10} md={3}>
+                    <Form.Control placeholder="City" onChange={this.onChange} value={this.state.userInput} />
                     </Col>
-                    <Col>
-                    <Button type="submit" variant="light" onClick={this.handleSubmit} >Submit form</Button>
+                    <Col xs={10} md={3}>
+                    <Button type="submit" variant="light" onClick={this.handleSubmit} variant='success'>Search city</Button>
                     </Col>
                 </Row>
             </Form>
+            <Row  className="justify-content-center text-center text-white" >
+            {this.state.resApi === true &&
             <Days state = {this.state}/>
+            }
+            {this.state.resApi === false &&
+            <div className="resApi">Select a city</div>
+            }
+            
        </Row>
         
     </div>

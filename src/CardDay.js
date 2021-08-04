@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col';
+import Forecast from './Forecast';
 
 function CardDay(props){
     
@@ -17,22 +18,27 @@ function CardDay(props){
         srcImg = ""
     }
     return(
-           
-                <Col xs={12} md={6} className= 'align-self-center weather'>
-                    <Card style={{ width: '100%', background: '#0b0829', padding: '20%' }}>
+           <Row>
+                <Col xs={12} md={5} className= 'align-self-center weather'>
+                    <Card style={{ width: '100%', background: '#0b0829'}}>
                       <Card.Body>
-                        <Card.Img variant="top" src={srcImg} style={{ width: '50%'}}/>
+                        <Card.Img variant="top" src={srcImg} style={{ width: '35%'}}/>
                         <Card.Title>{capitalizarFirst(props.city)}</Card.Title>
                         <Card.Text>
                             <span className="temperature">{Math.round(props.weather[0] ? props.weather[0].main.temp: "")}°</span>
-                            <div className="wind">Vent {props.weather[0] ? props.weather[0].wind.speed : ''}km/h 
+                            <div className="wind">Wind {props.weather[0] ? props.weather[0].wind.speed : ''}km/h 
                                                         ({props.weather[0] ? props.weather[0].wind.deg : ''}°)</div>
                             <div>{capitalizarFirst(props.weather[0] ? props.weather[0].weather[0].description : "")}</div>
                         </Card.Text>
                     </Card.Body>
                     </Card>
                 </Col>
-           
+                <Col xs={12} md={7} className= 'align-self-center weather'>
+                    {props.weather[0] &&
+                     <Forecast weather={props}/>
+                    }
+                </Col>
+           </Row>
     )
 }
 

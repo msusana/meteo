@@ -8,6 +8,20 @@ import moment from 'moment';
 
 function Days(props){
     const [numberDay, setNumberDay] = useState('');
+    // let myOptions = {
+    //     zoom: 15,
+    //     center: props.state.latitude + props.state.longitude,
+    //     mapTypeControl: false,
+    //     navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+    //     mapTypeId: google.maps.MapTypeId.ROADMAP
+    //     }
+    //     var map = new google.maps.Map(document.getElementByClass("mapcanvas"), myOptions)
+    //     var marker = new google.maps.Marker({
+    //     position: props.state.latitude + props.state.longitude ,
+    //     map: map,
+    //     title:"Estás aquí! (en un radio de "+position.coords.accuracy+" metros)"
+    //     })
+    // https://xitrus.es/blog/109/Geolocalizaci%C3%B3n_con_JavaScript
     function day(i){
         switch (i){
             case 1:
@@ -50,14 +64,17 @@ function Days(props){
         <CardDay weather={props.state.day5} city={props.state.newCity}/>
         }
 
-
-            <div className="card-action">
-                <div onClick={()=>day(1)}>{props.state.day1[0] ? moment(props.state.day1[0].dt_txt).format('dddd') :''} </div>
-                <div onClick={()=>day(2)}>{props.state.day2[0] ? moment(props.state.day2[0].dt_txt).format('dddd') :''} </div>
+        {props.state.resApi === true &&
+            <div className="card-action d-flex flex-row justify-content-around flex-wrap">
+                <div onClick={()=>day(1)}>{props.state.day1[0] ? 'Today' :''} </div>
+                <div onClick={()=>day(2)}>{props.state.day2[0] ? 'Tomorrow' :''} </div>
                 <div onClick={()=>day(3)}>{props.state.day3[0] ? moment(props.state.day3[0].dt_txt).format('dddd') :''} </div>
                 <div onClick={()=>day(4)}>{props.state.day4[0] ? moment(props.state.day4[0].dt_txt).format('dddd') :''} </div>
                 <div onClick={()=>day(5)}>{props.state.day5[0] ? moment(props.state.day5[0].dt_txt).format('dddd') :''} </div>
             </div>
+        
+        }
+        <div className="mapcanvas" style={{width: "400px", height:"400px"}}></div>
         </div>
     )
 }

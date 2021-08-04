@@ -1,5 +1,5 @@
 body{
-  background: #202629;
+  background: #0b0829;
   color: white;
 }
 
@@ -22,19 +22,42 @@ body{
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.resApi {
+  margin-top: 5%;
+  color:#2aa539;
+  font-size: calc(50px + 2vmin);
+  font-family: 'Roboto', sans-serif;
+  
+} 
 
 .App-link {
   color: #61dafb;
 }
 
-
-
+.form{
+  margin-top: 2%;
+}
+.forecast{
+  border-bottom:1px solid #2aa539;
+  margin-bottom: 1%;
+}
 
 /* Weather */
 .weather{
-  margin-top:4vh;
-  
-    
+  margin-top:4vh;   
+}
+.card-action{
+  margin-top: 3%;
+}
+.card-action div{
+background-color: rgb(7, 7, 7, 0.2);
+padding: 1% 2%;
+border-radius: 7%;
+border-style: outset;
+border-color: grey;
+}
+.card-action div:hover{
+  transform:scale(1.1);
 }
 
 .weather.card{
@@ -50,7 +73,6 @@ height: 30px;
 } */
 
 .weather .temperature {
-  margin-left:4vh;
   font-size:120px;
   font-family: 'Roboto', sans-serif;
   text-shadow: -1px 0 #61dafb, 0 1px #61dafb, 1px 0 #61dafb, 0 -1px #61dafb;
