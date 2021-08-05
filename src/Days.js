@@ -8,20 +8,7 @@ import moment from 'moment';
 
 function Days(props){
     const [numberDay, setNumberDay] = useState('');
-    // let myOptions = {
-    //     zoom: 15,
-    //     center: props.state.latitude + props.state.longitude,
-    //     mapTypeControl: false,
-    //     navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-    //     mapTypeId: google.maps.MapTypeId.ROADMAP
-    //     }
-    //     var map = new google.maps.Map(document.getElementByClass("mapcanvas"), myOptions)
-    //     var marker = new google.maps.Marker({
-    //     position: props.state.latitude + props.state.longitude ,
-    //     map: map,
-    //     title:"Estás aquí! (en un radio de "+position.coords.accuracy+" metros)"
-    //     })
-    // https://xitrus.es/blog/109/Geolocalizaci%C3%B3n_con_JavaScript
+  
     function day(i){
         switch (i){
             case 1:
@@ -74,7 +61,6 @@ function Days(props){
             </div>
         
         }
-        <div className="mapcanvas" style={{width: "400px", height:"400px"}}></div>
         </div>
     )
 }

@@ -7,10 +7,10 @@ import moment from 'moment';
 import Days from './Days';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
+import MapsGlobe from './MapsGlobe';
 
 const APIKEY = "b86876c84522fe8bb7cac5aa10314f50"
-//const momentRound = require('moment-round');
+
 
 class WeatherDays extends Component{
     constructor(props) {
@@ -154,7 +154,7 @@ render(){
             }
             
        </Row>
-        
+       <MapsGlobe />
     </div>
 
     )
