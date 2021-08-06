@@ -7,7 +7,8 @@ import moment from 'moment';
 import Days from './Days';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import MapsGlobe from './MapsGlobe';
+import { Link } from 'react-router-dom';
+
 
 const APIKEY = "b86876c84522fe8bb7cac5aa10314f50"
 
@@ -16,20 +17,19 @@ class WeatherDays extends Component{
     constructor(props) {
         super(props);
         this.state = {
-        newCity:"Lyon",
+        newCity:"",
         day1:[],
         day2:[],
         day3:[],
         day4:[],
         day5:[],
-        weatherDay: [],
         resApi: false,
         userInput:"",
         latitude: "",
         longitude: ""
         }
         this.geo = this.geo.bind(this);
-
+        this.parseDate = this.parseDate.bind(this);
     }
 
 componentDidMount(){
@@ -40,9 +40,9 @@ apiGeo =() =>{
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&units=metric&lang=en&appid=${APIKEY}`)
       .then((res) => res.json())
       .then(async(data) => { 
-          console.log(data)
             await this.parseDate(data)
-            await this.setState({resApi : true, newCity : data.city.name}) 
+            await this.setState({resApi : true, newCity : data.city.name})
+            await localStorage.setItem(this.state.newCity, JSON.stringify(this.state)) 
         })
         .catch(error => this.setState({resApi : false}))
  
@@ -52,17 +52,16 @@ api =() =>{
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.newCity}&units=metric&lang=en&appid=${APIKEY}`)
           .then((res) => res.json())
           .then(async(data) => { 
-            console.log(data)
-                await this.parseDate(data)
-                await this.setState({resApi : true}) 
+              await this.parseDate(data)
+              console.log('test');
+                await this.setState({resApi : true, newCity : data.city.name})
+                await localStorage.setItem(this.state.newCity, JSON.stringify(this.state)) 
             
           })
           .catch(error => this.setState({resApi : false, newCity : ""}))
      
 }
-weatherDay = (day) =>{
-    this.setState({WeatherDay: day})
-}
+
 geo_success = (position)=> {
     this.setState({latitude: position.coords.latitude, longitude: position.coords.longitude })
     this.apiGeo()
@@ -76,14 +75,25 @@ geo = ()=>{
     var wpid = navigator.geolocation.watchPosition(this.geo_success, this.geo_error);
 }  
 
-parseDate = (data) =>{
-this.setState({day1: [],day2: [],day3: [],day4: [],day5: [] })    
+parseDate = (data) => {
+    console.log('test', data);
+    this.setState({
+        day1: [],
+        day2: [],
+        day3: [],
+        day4: [],
+        day5: [],
+        latitude: data.city.coord.lat,
+        longitude: data.city.coord.lon 
+    })    
+    console.log(data);
 let dateArray = '';   
-const day1Date = moment().format('YYYY-MM-DD' );    
-const day2Date = moment().add(1, 'day').format('YYYY-MM-DD' );
-const day3Date = moment().add(2, 'day').format('YYYY-MM-DD' );
-const day4Date = moment().add(3, 'day').format('YYYY-MM-DD' );
-const day5Date = moment().add(4, 'day').format('YYYY-MM-DD' );
+let day1Date = moment().format('YYYY-MM-DD' );    
+let day2Date = moment().add(1, 'day').format('YYYY-MM-DD' );
+let day3Date = moment().add(2, 'day').format('YYYY-MM-DD' );
+let day4Date = moment().add(3, 'day').format('YYYY-MM-DD' );
+let day5Date = moment().add(4, 'day').format('YYYY-MM-DD' );
+console.log('const',day1Date, day2Date, day3Date, day4Date, day5Date)
 for (let index = 0; index < data.list.length; index++) {
 dateArray = data.list[index].dt_txt.split(" ", 1)
 switch (dateArray[0]){
@@ -117,7 +127,7 @@ switch (dateArray[0]){
         this.setState({day5: day5Array})
         break; 
         } 
-    }
+    }   
 }
 onChange = (event) => {
     this.setState({userInput: event.target.value})
@@ -131,6 +141,7 @@ handleSubmit = async(event) =>{
     await this.api()
   }
 
+
 render(){
    
     return ( 
@@ -143,6 +154,12 @@ render(){
                     <Col xs={10} md={3}>
                     <Button type="submit" variant="light" onClick={this.handleSubmit} variant='success'>Search city</Button>
                     </Col>
+                    <Col xs={10} md={3}>
+                    <Link to='/WeatherCities'>
+                    <Button type="submit" variant="light" onClick={this.localCity} variant='primary'>local city</Button>
+                    </Link>
+                   
+                    </Col>
                 </Row>
             </Form>
             <Row  className="justify-content-center text-center text-white" >
@@ -154,7 +171,7 @@ render(){
             }
             
        </Row>
-       <MapsGlobe />
+ 
     </div>
 
     )

@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'; 
 import Col from 'react-bootstrap/Col';
 import Forecast from './Forecast';
+import MapsGlobe from './MapsGlobe';
 
 function CardDay(props){
     
@@ -33,11 +34,13 @@ function CardDay(props){
                     </Card.Body>
                     </Card>
                 </Col>
+                
                 <Col xs={12} md={7} className= 'align-self-center weather'>
-                    {props.weather[0] &&
+                   {props.weather[0] &&
                      <Forecast weather={props}/>
                     }
-                </Col>
+                </Col> 
+                
            </Row>
     )
 }

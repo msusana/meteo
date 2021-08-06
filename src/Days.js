@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardDay from './CardDay';
 import moment from 'moment';
+import MapsGlobe from './MapsGlobe';
 
 function Days(props){
     const [numberDay, setNumberDay] = useState('');
@@ -27,11 +28,26 @@ function Days(props){
                 setNumberDay(i)
                 break;                 
             }
+
+        
   
 }
 
     return(
         <div>
+            {props.state.resApi === true &&
+        <MapsGlobe lat={props.state.latitude} lon={props.state.longitude}/>
+            }
+            {props.state.resApi === true &&
+            <div className="card-action d-flex flex-row justify-content-around flex-wrap">
+                <div onClick={()=>day(1)}>{props.state.day1[0] ? 'Today' :''} </div>
+                <div onClick={()=>day(2)}>{props.state.day2[0] ? 'Tomorrow' :''} </div>
+                <div onClick={()=>day(3)}>{props.state.day3[0] ? moment(props.state.day3[0].dt_txt).format('dddd') :''} </div>
+                <div onClick={()=>day(4)}>{props.state.day4[0] ? moment(props.state.day4[0].dt_txt).format('dddd') :''} </div>
+                <div onClick={()=>day(5)}>{props.state.day5[0] ? moment(props.state.day5[0].dt_txt).format('dddd') :''} </div>
+            </div>
+        
+        }
         {numberDay === "" &&
         <CardDay weather={props.state.day1} city={props.state.newCity}/>
         }
@@ -51,16 +67,8 @@ function Days(props){
         <CardDay weather={props.state.day5} city={props.state.newCity}/>
         }
 
-        {props.state.resApi === true &&
-            <div className="card-action d-flex flex-row justify-content-around flex-wrap">
-                <div onClick={()=>day(1)}>{props.state.day1[0] ? 'Today' :''} </div>
-                <div onClick={()=>day(2)}>{props.state.day2[0] ? 'Tomorrow' :''} </div>
-                <div onClick={()=>day(3)}>{props.state.day3[0] ? moment(props.state.day3[0].dt_txt).format('dddd') :''} </div>
-                <div onClick={()=>day(4)}>{props.state.day4[0] ? moment(props.state.day4[0].dt_txt).format('dddd') :''} </div>
-                <div onClick={()=>day(5)}>{props.state.day5[0] ? moment(props.state.day5[0].dt_txt).format('dddd') :''} </div>
-            </div>
         
-        }
+        
         </div>
     )
 }
