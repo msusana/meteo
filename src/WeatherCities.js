@@ -47,7 +47,7 @@ class WeatherCities extends Component{
     }
 
 apiLocalStorage  =() =>{   
-    
+    this.setState({resApi : false})
         fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&units=metric&lang=en&appid=${APIKEY}`)
           .then((res) => res.json())
           .then(async(data) => { 
@@ -119,11 +119,6 @@ async chooseCurrentCity(city){
     await this.setState({latitude: city.latitude, longitude: city.longitude})
     await this.apiLocalStorage()
    }
-
-   
-
-
-
 
 
 

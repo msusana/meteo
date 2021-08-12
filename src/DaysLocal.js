@@ -7,7 +7,7 @@ import CardDay from './CardDay';
 import moment from 'moment';
 import MapsGlobe from './MapsGlobe';
 
-function Days(props){
+function DaysLocal(props){
     const [numberDay, setNumberDay] = useState('');
   
     function day(i){
@@ -75,4 +75,4 @@ function Days(props){
     )
 }
 
-export default Days;
+export default DaysLocal;

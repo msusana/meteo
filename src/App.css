@@ -84,3 +84,7 @@ height: 30px;
   font-family: 'Roboto', sans-serif;
   text-shadow: -1px 0 #61dafb, 0 1px #61dafb, 1px 0 #61dafb, 0 -1px #61dafb;
 } 
+.globe{
+  margin-top: 3%;
+  margin-bottom: 1%;
+}

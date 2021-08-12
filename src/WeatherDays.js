@@ -36,7 +36,6 @@ componentDidMount(){
     this.geo()  
 }
 apiGeo =() =>{   
-   
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&units=metric&lang=en&appid=${APIKEY}`)
       .then((res) => res.json())
       .then(async(data) => { 
@@ -48,7 +47,7 @@ apiGeo =() =>{
  
 }
 api =() =>{   
-    
+    this.setState({resApi : false})
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.newCity}&units=metric&lang=en&appid=${APIKEY}`)
           .then((res) => res.json())
           .then(async(data) => { 
@@ -156,7 +155,7 @@ render(){
                     </Col>
                     <Col xs={10} md={3}>
                     <Link to='/WeatherCities'>
-                    <Button type="submit" variant="light" onClick={this.localCity} variant='primary'>local city</Button>
+                    <Button type="submit" variant="light" onClick={this.localCity} variant='primary'>Your Search History </Button>
                     </Link>
                    
                     </Col>
