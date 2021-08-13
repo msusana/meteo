@@ -5,7 +5,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import moment from 'moment';
 import Days from './Days';
-// import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import MapsGlobeCities from './MapsGlobeCities';
 
@@ -104,13 +103,21 @@ switch (dateArray[0]){
         } 
     }
 }
+deleteCity = (key) => {
+localStorage.removeItem(key.name)
+this.getLocalStorage()
+}
+
 
 mappedCity = () => {
 
     return this.state.city.map((key)=> {
 
        return (
+           <div>
             <Button variant='dark' value={key.name} key={key.name} onClick={()=>this.chooseCurrentCity(key)}>{key.name}</Button>
+             <Button variant="secondary" onClick={()=>this.deleteCity(key)}> ❌ </Button>
+             </div>
             )
         })
    }
@@ -130,11 +137,12 @@ render(){
         <div className="card-cities d-flex flex-row justify-content-around flex-wrap">
             {this.mappedCity()}
         </div> 
-        
+      
+           
         {this.state.resApi === true &&
             <Days state = {this.state}/>
             }
-           
+            
         <div className="d-flex flex-row justify-content-center flex-wrap" 
             style = {{backgroundImage: "url('https://unpkg.com/three-globe@2.18.6/example/img/night-sky.png')",
             backgroundPosition: 'center',
